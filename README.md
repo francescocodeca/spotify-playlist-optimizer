@@ -35,6 +35,8 @@ Binary variable per candidate track (4,323 candidates). Objective: maximize the 
 
 HiGHS solves it in about half a second; the LP relaxation is almost integral. A greedy rule reaches almost the same objective but violates the novelty constraint: the value of the MILP is that all constraints hold together.
 
+**What the constraints cost.** The dual prices of the LP relaxation, checked by solving the MILP again with each parameter changed: one more minute of playlist is worth 0.97 expected minutes (the value of the marginal track), while every other constraint is almost free (0.009 expected minutes from 2 to 3 tracks per artist; exactly 0 for the constraints with slack). Even a playlist of only new tracks costs 0.10 expected minutes out of 43.5. The constraints shape the playlist at almost no cost to the objective.
+
 ![MILP against random playlists](results/milp_vs_random.png)
 
 **What I dropped, with numbers**
@@ -90,7 +92,7 @@ Over the 23 planned weeks the predicted contrast stays stable: the mean predicte
 | `docs/experiment_protocol.md` | Pre-registered protocol of the experiment |
 | `notebooks/01_exploration.ipynb` | Exploration: context, track history, sessions, drift, label definition |
 | `notebooks/02_model.ipynb` | Baselines, models, calibration, cold start, backtest, decay of the rates |
-| `notebooks/03_milp.ipynb` | MILP: solution, long tracks, greedy and random comparisons, LP relaxation, sensitivity, rotation |
+| `notebooks/03_milp.ipynb` | MILP: solution, long tracks, greedy and random comparisons, LP relaxation, sensitivity, shadow prices, cost of novelty, rotation |
 | `notebooks/04_order.ipynb` | Does the order of the tracks matter? |
 | `notebooks/05_experiment_design.ipynb` | Design of the experiment: correlation, simulator, power, identification of the plays |
 | `results/` | Figures of this README, saved by notebooks 02, 03 and 05 |
