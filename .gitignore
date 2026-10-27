@@ -1,0 +1,17 @@
+# Personal Spotify data: NEVER on GitHub
+data/
+
+# macOS system files
+.DS_Store
+
+# Python virtual environment and generated files
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Secrets (keys, tokens)
+.env
+
+# Personal editor settings
+.vscode/

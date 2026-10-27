@@ -1,0 +1,21 @@
+name: spotify
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pandas>=3       # data tables
+  - numpy           # numerical computing
+  - scipy           # scientific functions
+  - matplotlib      # plots
+  - scikit-learn    # machine learning models
+  - joblib          # saving the trained model
+  - jupyterlab      # notebooks
+  - ipykernel       # connects the environment to the notebooks
+  - pyarrow         # parquet files
+  - pulp>=4.2       # optimization modelling (MILP); the 4.x API differs from 2.x/3.x
+  - highspy         # HiGHS solver (open source), used by PuLP
+  - python-dotenv   # reads the Spotify keys from the .env file
+  - pip
+  - pip:
+      # Spotify Web API client; 2.26 uses the endpoints introduced in February 2026
+      - spotipy>=2.26
