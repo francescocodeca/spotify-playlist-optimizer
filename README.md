@@ -51,7 +51,7 @@ HiGHS solves it in about half a second; the LP relaxation is almost integral. A 
 **Design: interleaving**, the method used to compare recommender systems.
 
 - One private Spotify playlist, replaced automatically every Monday through the Spotify Web API: 300 minutes of MILP tracks and 300 minutes of control tracks, mixed in random order. The arm of each track is saved but not looked at before the analysis.
-- Control arm: the same MILP with a random value per minute instead of the predictions, so the two arms have the same duration, artists per playlist, share of new tracks and long tracks. They differ only in the use of the predictions.
+- Control arm: the same MILP with a random value per minute instead of the predictions, so the two arms have the same constraints: duration, artists per playlist, limits on the share of new tracks (10–40%) and on long tracks. They differ only in the use of the predictions. Within the limits the MILP picks more new tracks (28.7% against 13.4% over the planned weeks), because the model predicts low skip probabilities for them: the results for known and new tracks are reported separately.
 - Listening is free (any time, any amount). While the playlist plays: normal shuffle, no queue, no click on a specific track.
 - Why not one playlist per day, alternating the arms: plays in the same session and day are correlated (intraclass correlation 0.19 within a session), so 40 plays of one day are worth only 7–13 independent plays (design effect 3.0–5.5). With interleaving both arms share every session, and the session effect cancels out.
 
@@ -89,14 +89,16 @@ Over the 23 planned weeks the predicted contrast stays stable: the mean predicte
 | `src/experiment.py` | Weekly playlist of the experiment (both arms) and upload to Spotify |
 | `src/spotify_client.py` | Spotify Web API client (OAuth) and the private playlist "Experiment" |
 | `src/analysis.py` | Analysis of the experiment: experimental plays, effect with confidence intervals, permutation test |
+| `src/simulate_history.py` | Simulated export (real history plus invented plays with a known effect) to check the analysis before the real data |
 | `docs/experiment_protocol.md` | Pre-registered protocol of the experiment |
 | `notebooks/01_exploration.ipynb` | Exploration: context, track history, sessions, drift, label definition |
 | `notebooks/02_model.ipynb` | Baselines, models, calibration, cold start, backtest, decay of the rates |
 | `notebooks/03_milp.ipynb` | MILP: solution, long tracks, greedy and random comparisons, LP relaxation, sensitivity, shadow prices, cost of novelty, rotation |
 | `notebooks/04_order.ipynb` | Does the order of the tracks matter? |
 | `notebooks/05_experiment_design.ipynb` | Design of the experiment: correlation, simulator, power, identification of the plays |
+| `notebooks/06_results.ipynb` | Results of the experiment: written and checked on the simulated export before any real outcome |
 | `results/` | Figures of this README, saved by notebooks 02, 03 and 05 |
-| `tests/` | Automatic tests (`pytest`) on small hand-made cases: label and features (including a check that no feature uses information from the future), MILP constraints, identification of the experimental plays, permutation test and bootstrap |
+| `tests/` | Automatic tests (`pytest`) on small hand-made cases: label and features (including a check that no feature uses information from the future), MILP constraints, identification of the experimental plays (also on a simulated export), permutation test and bootstrap |
 | `.github/workflows/tests.yml` | Runs the tests on GitHub Actions at every push |
 
 ## Reproduce
@@ -111,6 +113,7 @@ python src/candidates.py
 python src/playlist.py "2026-10-26 08:00" --minutes 45
 python src/experiment.py 2026-11-02
 python src/analysis.py "<folder of a newer export>" --count-only
+python src/simulate_history.py
 ```
 
 The raw data are personal and are not included: the scripts expect Spotify's "Extended streaming history" in `data/Spotify Extended Streaming History/`. The tests need no personal data: run `pytest` from the project folder.

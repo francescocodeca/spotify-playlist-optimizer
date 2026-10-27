@@ -67,4 +67,9 @@ Spotify Extended Streaming History, requested after the end of the experiment.
 - One listener: the result is about my listening, not about other users.
 
 ## Deviations
-None so far.
+- 2026-10-27, clarification (no change to the design or the code): "same share of new tracks"
+  in "Design" means the same limits on the share (10% to 40%), not the same share. In the
+  planned weeks (notebook 05, built before any outcome) the MILP arm has 28.7% new tracks on
+  average against 13.4% in the control arm (14% and 15% in the first week), because the model
+  predicts low skip probabilities for new tracks. The secondary results for known and new tracks
+  separately, already planned, separate the two effects.

@@ -32,18 +32,18 @@ def load_playlists(directory: Path = EXPERIMENT_DIR) -> pd.DataFrame:
 
 
 def add_arm(df: pd.DataFrame, playlists: pd.DataFrame) -> pd.DataFrame:
-    """Add uploaded, arm, d and is_new from the last upload with the track before each play.
+    """Add uploaded, arm, d, p0 and is_new from the last upload with the track before each play.
 
     For an experimental play this upload is the active playlist. NaN for tracks never uploaded
     before the play. df must be sorted by time.
     """
-    right = playlists[["uploaded", "track_uri", "arm", "d", "is_new"]].sort_values("uploaded")
+    right = playlists[["uploaded", "track_uri", "arm", "d", "p0", "is_new"]].sort_values("uploaded")
     # For each play, the last row of `right` with the same track and uploaded <= ts
     merged = pd.merge_asof(
         df[["ts", "track_uri"]], right, left_on="ts", right_on="uploaded", by="track_uri"
     )
     merged.index = df.index
-    return df.join(merged[["uploaded", "arm", "d", "is_new"]])
+    return df.join(merged[["uploaded", "arm", "d", "p0", "is_new"]])
 
 
 def experiment_plays(

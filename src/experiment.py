@@ -70,6 +70,22 @@ def weekly_playlist(
     return both[["track_uri", "arm", "d", "p0", "is_new"]].reset_index(drop=True)
 
 
+def plan_weeks(
+    streams: pd.DataFrame, pool: pd.DataFrame, model, mondays: pd.DatetimeIndex,
+) -> pd.DataFrame:
+    """Weekly playlists of several Mondays built in memory, with the same 4-week rotation.
+
+    The files in EXPERIMENT_DIR are neither read nor written. Columns of weekly_playlist plus
+    monday.
+    """
+    weeks = {}
+    for monday in mondays:
+        first = monday - pd.Timedelta(weeks=EXCLUDE_WEEKS)
+        exclude = set().union(*(set(w["track_uri"]) for m, w in weeks.items() if m >= first))
+        weeks[monday] = weekly_playlist(streams, pool, model, monday, exclude=exclude)
+    return pd.concat(weeks, names=["monday", None]).reset_index(level=0)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Weekly playlist of the experiment.")
     parser.add_argument(
