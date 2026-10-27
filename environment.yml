@@ -15,6 +15,7 @@ dependencies:
   - pulp>=4.2       # optimization modelling (MILP); the 4.x API differs from 2.x/3.x
   - highspy         # HiGHS solver (open source), used by PuLP
   - python-dotenv   # reads the Spotify keys from the .env file
+  - pytest          # automatic tests (tests/)
   - pip
   - pip:
       # Spotify Web API client; 2.26 uses the endpoints introduced in February 2026

@@ -1,5 +1,7 @@
 # Optimized playlists from my Spotify listening data
 
+[![tests](https://github.com/francescocodeca/spotify-playlist-optimizer/actions/workflows/tests.yml/badge.svg)](https://github.com/francescocodeca/spotify-playlist-optimizer/actions/workflows/tests.yml)
+
 **Predict, decide, verify** on six years of my own listening history (about 111,000 music plays since 2020, from Spotify's extended streaming history):
 
 1. **Predict:** a logistic regression estimates the probability that I skip a track, validated over time only.
@@ -92,6 +94,8 @@ Over the 23 planned weeks the predicted contrast stays stable: the mean predicte
 | `notebooks/04_order.ipynb` | Does the order of the tracks matter? |
 | `notebooks/05_experiment_design.ipynb` | Design of the experiment: correlation, simulator, power, identification of the plays |
 | `results/` | Figures of this README, saved by notebooks 02, 03 and 05 |
+| `tests/` | Automatic tests (`pytest`) on small hand-made cases: label and features (including a check that no feature uses information from the future), MILP constraints, identification of the experimental plays, permutation test and bootstrap |
+| `.github/workflows/tests.yml` | Runs the tests on GitHub Actions at every push |
 
 ## Reproduce
 
@@ -107,4 +111,4 @@ python src/experiment.py 2026-11-02
 python src/analysis.py "<folder of a newer export>" --count-only
 ```
 
-The raw data are personal and are not included: the scripts expect Spotify's "Extended streaming history" in `data/Spotify Extended Streaming History/`.
+The raw data are personal and are not included: the scripts expect Spotify's "Extended streaming history" in `data/Spotify Extended Streaming History/`. The tests need no personal data: run `pytest` from the project folder.
